@@ -3,8 +3,8 @@ from art import logo
 from helpers import deal, able_to_continue, game_loop
 print(logo)
 
-dealer = {"name": "dealer", "total": 0}
-player = {"name": "player", "total": 0}
+dealer = {"name": "dealer", "total": 0, "cards": []}
+player = {"name": "player", "total": 0, "cards": []}
 
 
 def the_game():

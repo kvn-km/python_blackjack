@@ -33,8 +33,10 @@ def deal(deal_to):
     if deck[card] > 0:
         if card in deal_to:
             deal_to[card] += 1
+            deal_to["cards"].append(str(card))
         else:
             deal_to[card] = 1
+            deal_to["cards"].append(str(card))
 
         deck[card] -= 1
 
@@ -61,10 +63,10 @@ def check_for_winners(check_for):
 def check_for_busts(check_for):
     if check_for["total"] > 21:
         if check_for["name"] == "player":
-            print(":( YOU LOSE! Player busts!")
+            print(f":( YOU LOSE! Player busts with {check_for['total']}!")
             exit()
         elif check_for["name"] == "dealer":
-            print(":) YOU WIN! Dealer busts!")
+            print(f":) YOU WIN! Dealer busts with {check_for['total']}!")
             exit()
 
 
@@ -81,24 +83,9 @@ def able_to_continue(check_for):
 
 
 def game_loop(player, dealer):
-    print(f"DEALER SHOWS {list(dealer.keys())[2]}")
-    player_hand = ""
-    for key in player:
-        print(key)
-        if key == "name" or key == "total":
-            None
-        elif str(key).find("ace_value") != -1:
-            None
-        else:
-            counter = 1
-            while counter < player[key]:
-                player_hand = player_hand + str(key) + " "
-                counter += 1
-
-    print(F"PLAYER HAND {player_hand}")
-
-    print(f"PLAYER HAND = {player}")
-
+    print(f"DEALER SHOWS : {list(dealer.keys())[3]}")
+    print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
+    print("\n")
     if able_to_continue(player) is True:
         ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
         if ask_to_hit == "":
