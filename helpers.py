@@ -53,20 +53,20 @@ def deal(deal_to):
 def check_for_winners(check_for):
     if check_for["total"] == 21:
         if check_for["name"] == "player":
-            print(":) YOU WIN! Player wins with Blackjack!")
+            print(":) YOU WIN! Player wins with Blackjack!\n")
             exit()
         elif check_for["name"] == "dealer":
-            print(":( YOU LOSE! Dealer wins with Blackjack!")
+            print(":( YOU LOSE! Dealer wins with Blackjack!\n")
             exit()
 
 
 def check_for_busts(check_for):
     if check_for["total"] > 21:
         if check_for["name"] == "player":
-            print(f":( YOU LOSE! Player busts with {check_for['total']}!")
+            print(f":( YOU LOSE! Player busts with {check_for['total']}!\n")
             exit()
         elif check_for["name"] == "dealer":
-            print(f":) YOU WIN! Dealer busts with {check_for['total']}!")
+            print(f":) YOU WIN! Dealer busts with {check_for['total']}!\n")
             exit()
 
 
@@ -82,19 +82,34 @@ def able_to_continue(check_for):
             return True
 
 
-def game_loop(player, dealer):
+def game_loop(player, dealer, hit_or_stay):
+    print("--------------------")
     print(f"DEALER SHOWS : {list(dealer.keys())[3]}")
     print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
-    print("\n")
     if able_to_continue(player) is True:
-        ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
-        if ask_to_hit == "":
-            deal(player)
+        if hit_or_stay == None:
+            ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
+            if ask_to_hit == "":
+                print("HIT")
+                deal(player)
+                game_loop(player, dealer, None)
+            elif ask_to_hit == " ":
+                print("STAY")
+                game_loop(player, dealer, "stay")
+        elif hit_or_stay == "stay":
             if able_to_continue(dealer) is True:
                 deal(dealer)
-            game_loop(player, dealer)
-        elif ask_to_hit == " ":
-            if able_to_continue(dealer) is True:
-                deal(dealer)
+                game_loop(player, dealer, "stay")
             else:
-                print("Both sides stay.")
+                player = player["total"]
+                dealer = dealer["total"]
+                if player > dealer:
+                    print(
+                        f":) YOU WIN! Player wins with {player}. Dealer holds {dealer}\n")
+                elif dealer > player:
+                    print(
+                        f":( YOU LOSE! Dealer wins with {dealer}. Player holds {player}\n")
+                elif player == dealer:
+                    print(f":| DRAW! It's a tie with {player:dealer}\n")
+                else:
+                    print("ERROR: Both STAY ERROR")
