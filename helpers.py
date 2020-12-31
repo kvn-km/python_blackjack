@@ -7,8 +7,8 @@ deck = {
 
 def reduce_value_of_an_ace(deal_to):
     status = False
-    for key in deal_to:
-        if "ace_value" in key and deal_to[key] == 11:
+    for key in list(deal_to.keys()):
+        if type(key) != int and key.find("ace_value") == 0 and deal_to[key] == 11:
             deal_to[key] = 1
             deal_to["total"] -= 10
             status = True
@@ -50,29 +50,52 @@ def deal(deal_to):
         deal(deal_to)
 
 
-def check_for_winners(check_for):
+def check_for_winners(check_for, player, dealer):
     if check_for["total"] == 21:
         if check_for["name"] == "player":
+            print("")
+            print("------END GAME------")
+            print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
+            print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
             print(":) YOU WIN! Player wins with Blackjack!\n")
             exit()
         elif check_for["name"] == "dealer":
+            print("")
+            print("------END GAME------")
+            print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
+            print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
             print(":( YOU LOSE! Dealer wins with Blackjack!\n")
             exit()
 
 
-def check_for_busts(check_for):
+def check_for_busts(check_for, player, dealer):
     if check_for["total"] > 21:
-        if check_for["name"] == "player":
-            print(f":( YOU LOSE! Player busts with {check_for['total']}!\n")
-            exit()
-        elif check_for["name"] == "dealer":
-            print(f":) YOU WIN! Dealer busts with {check_for['total']}!\n")
-            exit()
+        print("check for " + check_for["name"])
+        if reduce_value_of_an_ace(check_for) is True:
+            print("check for " + check_for["name"] + " REDUCE.")
+            check_for_busts(check_for, player, dealer)
+        else:
+            if check_for["name"] == "player":
+                print("")
+                print("------END GAME------")
+                print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
+                print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
+                print(
+                    f":( YOU LOSE! Player busts with {check_for['total']}. Dealer holds {dealer['total']}.\n")
+                exit()
+            elif check_for["name"] == "dealer":
+                print("")
+                print("------END GAME------")
+                print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
+                print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
+                print(
+                    f":) YOU WIN! Dealer busts with {check_for['total']}. Player holds {player['total']}.\n")
+                exit()
 
 
-def able_to_continue(check_for):
-    check_for_winners(check_for)
-    check_for_busts(check_for)
+def able_to_continue(check_for, player, dealer):
+    check_for_winners(check_for, player, dealer)
+    check_for_busts(check_for, player, dealer)
     if check_for["name"] == "player":
         return True
     elif check_for["name"] == "dealer":
@@ -83,10 +106,14 @@ def able_to_continue(check_for):
 
 
 def game_loop(player, dealer, hit_or_stay):
+    # print("--------------------")
+    # print(f"dealer = {dealer}")
+    # print(f"player = {player}")
+    # print("--------------------")
     print("--------------------")
     print(f"DEALER SHOWS : {list(dealer.keys())[3]}")
     print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
-    if able_to_continue(player) is True:
+    if able_to_continue(player, player, dealer) is True:
         if hit_or_stay == None:
             ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
             if ask_to_hit == "":
@@ -97,19 +124,21 @@ def game_loop(player, dealer, hit_or_stay):
                 print("STAY")
                 game_loop(player, dealer, "stay")
         elif hit_or_stay == "stay":
-            if able_to_continue(dealer) is True:
+            if able_to_continue(dealer, player, dealer) is True:
                 deal(dealer)
                 game_loop(player, dealer, "stay")
             else:
+                print("------END GAME------")
+                print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
+                print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
                 player = player["total"]
                 dealer = dealer["total"]
                 if player > dealer:
-                    print(
-                        f":) YOU WIN! Player wins with {player}. Dealer holds {dealer}\n")
+                    print(":) YOU WIN! Player wins with " + str(player) +
+                          ". Dealer holds " + str(dealer) + ".\n")
                 elif dealer > player:
-                    print(
-                        f":( YOU LOSE! Dealer wins with {dealer}. Player holds {player}\n")
+                    print(":( YOU LOSE! Dealer wins with " +
+                          str(dealer) + ". Player holds " + str(player) + ".\n")
                 elif player == dealer:
-                    print(f":| DRAW! It's a tie with {player:dealer}\n")
-                else:
-                    print("ERROR: Both STAY ERROR")
+                    print(":| DRAW! It's a tie with " +
+                          str(player) + ":" + str(dealer) + ".\n")

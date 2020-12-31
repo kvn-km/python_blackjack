@@ -17,9 +17,6 @@ def the_game():
         deal(player)
         deal(dealer)
 
-        # print(f"dealer = {dealer}")
-        # print(f"player = {player}")
-
     game_loop(player, dealer, None)
 
 
