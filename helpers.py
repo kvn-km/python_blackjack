@@ -70,9 +70,7 @@ def check_for_winners(check_for, player, dealer):
 
 def check_for_busts(check_for, player, dealer):
     if check_for["total"] > 21:
-        print("check for " + check_for["name"])
         if reduce_value_of_an_ace(check_for) is True:
-            print("check for " + check_for["name"] + " REDUCE.")
             check_for_busts(check_for, player, dealer)
         else:
             if check_for["name"] == "player":
@@ -111,7 +109,10 @@ def game_loop(player, dealer, hit_or_stay):
     # print(f"player = {player}")
     # print("--------------------")
     print("--------------------")
-    print(f"DEALER SHOWS : {list(dealer.keys())[3]}")
+    if hit_or_stay == "stay":
+        print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
+    else:
+        print(f"DEALER SHOWS : {list(dealer.keys())[3]}")
     print(f"PLAYER SHOWS : {' '.join(player['cards'])}")
     if able_to_continue(player, player, dealer) is True:
         if hit_or_stay == None:
@@ -128,6 +129,7 @@ def game_loop(player, dealer, hit_or_stay):
                 deal(dealer)
                 game_loop(player, dealer, "stay")
             else:
+                print("")
                 print("------END GAME------")
                 print(f"DEALER SHOWS : {' '.join(dealer['cards'])}")
                 print(f"PLAYER SHOWS : {' '.join(player['cards'])}")

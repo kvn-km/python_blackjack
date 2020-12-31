@@ -6,8 +6,6 @@
 
 ### Dealer stays on 17.
 
-### Five cards under 21 wins.
-
 ### No splits.
 
 ### No insurance.
