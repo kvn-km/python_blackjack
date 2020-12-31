@@ -5,6 +5,29 @@ deck = {
 }
 
 
+def reduce_value_of_an_ace(deal_to):
+    status = False
+    for key in deal_to:
+        if "ace_value" in key and deal_to[key] == 11:
+            deal_to[key] = 1
+            deal_to["total"] -= 10
+            status = True
+            break
+    return status
+
+
+def try_values_for_ace(deal_to):
+    if deal_to["total"] >= 11:
+        if reduce_value_of_an_ace(deal_to) is True:
+            try_values_for_ace(deal_to)
+        else:
+            deal_to["total"] += 1
+            deal_to[f"ace_value{deal_to['A']}"] = 1
+    else:
+        deal_to["total"] += 11
+        deal_to[f"ace_value{deal_to['A']}"] = 11
+
+
 def deal(deal_to):
     card = random.choice(list(deck.items()))[0]
     if deck[card] > 0:
@@ -18,17 +41,7 @@ def deal(deal_to):
         if card == "J" or card == "Q" or card == "K":
             deal_to["total"] += 10
         elif card == "A":
-            if deal_to["total"] >= 11:
-                for key in deal_to:
-                    if "ace_value" in key and deal_to[key] == 11:
-                        deal_to[key] = 1
-                        deal_to["total"] -= 10
-                    else:
-                        deal_to[f"ace_value{deal_to['A']}"] += 1
-                        deal_to["total"] += 11
-
-                        else:
-
+            try_values_for_ace(deal_to)
         else:
             deal_to["total"] += card
     else:
