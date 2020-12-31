@@ -1,4 +1,4 @@
-# House Rules
+# HOUSE RULES
 
 ### The Jack/Queen/King all count as 10.
 
@@ -11,3 +11,7 @@
 ### There are no jokers.
 
 ### Deck resets after each game.
+
+#### SETUP
+
+##### Run 'python3 app.py'
