@@ -1,6 +1,5 @@
-import math
 from art import logo
-from helpers import deal, able_to_continue, game_loop
+from helpers import deal, game_loop
 print(logo)
 
 dealer = {"name": "dealer", "total": 0, "cards": []}
