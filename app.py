@@ -21,8 +21,19 @@ def the_game():
     # 2 check totals
     # 3 if any winners (21), end game
     # 4 if player above 21, end game
-    if able_to_continue(player) is True:
-        ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
+    def game_loop():
+        if able_to_continue(player) is True:
+            ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
+            if ask_to_hit == "":
+                deal(player)
+                if able_to_continue(dealer) is true:
+                    deal(dealer)
+                game_loop()
+            elif ask_to_hit == " ":
+                if able_to_continue(dealer) is true:
+                    deal(dealer)
+                else:
+                    print("Both sides stay.")
 
     # 5 if player below 21, ask to hit
     # 6 if HIT, deal card to player
