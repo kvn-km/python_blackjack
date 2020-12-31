@@ -78,3 +78,36 @@ def able_to_continue(check_for):
             return False
         else:
             return True
+
+
+def game_loop(player, dealer):
+    print(f"DEALER SHOWS {list(dealer.keys())[2]}")
+    player_hand = ""
+    for key in player:
+        print(key)
+        if key == "name" or key == "total":
+            None
+        elif str(key).find("ace_value") != -1:
+            None
+        else:
+            counter = 1
+            while counter < player[key]:
+                player_hand = player_hand + str(key) + " "
+                counter += 1
+
+    print(F"PLAYER HAND {player_hand}")
+
+    print(f"PLAYER HAND = {player}")
+
+    if able_to_continue(player) is True:
+        ask_to_hit = input("ENTER to hit.\nSPACE to stay.\n")
+        if ask_to_hit == "":
+            deal(player)
+            if able_to_continue(dealer) is True:
+                deal(dealer)
+            game_loop(player, dealer)
+        elif ask_to_hit == " ":
+            if able_to_continue(dealer) is True:
+                deal(dealer)
+            else:
+                print("Both sides stay.")
