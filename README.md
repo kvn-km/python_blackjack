@@ -6,9 +6,7 @@
 
 ### Dealer stays on 17.
 
-### No splits.
-
-### No insurance.
+### No splits or insurance.
 
 ### There are no jokers.
 
